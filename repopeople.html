@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User List</title>
+	<style type="text/css">
+		.load_users{
+			background: #fff;
+			border: 1px solid rgb(0,0,0,.2);
+			border-radius: 5px;
+			padding-left: 20px;
+			padding-right: 20px;
+			margin-left: 20px;
+			cursor: pointer;
+		}
+		.single_user{
+			background: rgb(0,0,0,.1);
+			padding: 20px;
+			margin: 10px;
+			width: 95%;
+			display: inline-flex;
+		}
+		.single_user img{
+			margin-top: 15px;
+		}
+		.single_user ul {
+		  list-style-type: none;
+		}
+
+		.single_user ul li{
+		  font-weight: bold;
+		  font-size: 20px;
+		  line-height: 30px;
+		}
+	</style>
+</head>
+<body>
+		
+	<button onclick="loadData()" class="load_users">Load Github Users</button>
+	<h1 style="margin-left: 20px;">Github Users</h1>
+	<span id="peopledata"></span>
+
+	<script>
+		function loadData(){
+			var xhttp=new XMLHttpRequest();
+			xhttp.onreadystatechange=function(){
+			if(this.readyState==4 && this.status==200){
+				var people = JSON.parse(this.responseText)
+				var output= ' ';
+				 for(var i in people){
+				 output +=
+				 '<div class="single_user">' +
+					 '<img src="'+people[i].avatar_url+'" width="150px" height="150px">' +
+					 '<ul>' +
+						 '<li>ID: '+people[i].id+'</li>' +
+						 '<li>Login: '+people[i].login+'</li>' +
+						 '<li>Repos:'+people[i].repos_url+'</li>'+
+						 '<li>Html URL:'+people[i].html_url+'</li>'+
+						 '<li>Followers Url:'+people[i].followers_url+'</li>'+
+					 '</ul>'+
+				 '</div><br>';
+
+				 	//only 15 users data will show
+				 	if(i==14){
+				 		break;
+				 	}
+				}
+				document.getElementById("peopledata").innerHTML=output;}
+			};
+			xhttp.open('GET','https://api.github.com/users',true);
+			xhttp.send();
+		}
+	</script>
+</body>
+</html>
